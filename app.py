@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, redirect, flash, send_from_directory
 from flask_mail import Mail, Message
-import mysql.connector
 import os
 
 # ==========================================
@@ -19,35 +18,11 @@ app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_TLS"] = True
 app.config["MAIL_USE_SSL"] = False
 
-# Replace these with your own Gmail details
-app.config["MAIL_USERNAME"] = "achaithana35@gmail.com"
-app.config["MAIL_PASSWORD"] = "ubkd iyqo qhzd pfyb"
+# Environment Variables (Set these in Render)
+app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
+app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
 
 mail = Mail(app)
-
-# ==========================================
-# MySQL Database Configuration
-# ==========================================
-
-db_config = {
-    "host": "localhost",
-    "user": "root",
-    "password": "",
-    "database": "portfolio_db"
-}
-
-# ==========================================
-# Database Connection
-# ==========================================
-
-def get_db_connection():
-    try:
-        connection = mysql.connector.connect(**db_config)
-        return connection
-
-    except mysql.connector.Error as error:
-        print("Database Error:", error)
-        return None
 
 # ==========================================
 # Home Page
@@ -55,32 +30,7 @@ def get_db_connection():
 
 @app.route("/")
 def home():
-
-    projects = []
-
-    try:
-        conn = get_db_connection()
-
-        if conn:
-            cursor = conn.cursor(dictionary=True)
-
-            cursor.execute(
-                "SELECT * FROM projects ORDER BY id DESC"
-            )
-
-            projects = cursor.fetchall()
-
-            cursor.close()
-            conn.close()
-
-    except Exception as e:
-        print(e)
-
-    return render_template(
-        "index.html",
-        projects=projects
-    )
-
+    return render_template("index.html")
 # ==========================================
 # Contact Form
 # ==========================================
@@ -94,37 +44,6 @@ def contact():
     message = request.form.get("message")
 
     try:
-
-        conn = get_db_connection()
-
-        if conn:
-
-            cursor = conn.cursor()
-
-            query = """
-            INSERT INTO contact_messages
-            (name,email,subject,message)
-            VALUES(%s,%s,%s,%s)
-            """
-
-            cursor.execute(
-                query,
-                (
-                    name,
-                    email,
-                    subject,
-                    message
-                )
-            )
-
-            conn.commit()
-
-            cursor.close()
-            conn.close()
-
-        # =====================================
-        # Send Email Notification
-        # =====================================
 
         msg = Message(
             subject=f"New Portfolio Contact: {subject}",
@@ -151,21 +70,14 @@ This message was sent from your portfolio contact form.
 
         mail.send(msg)
 
-        flash(
-            "Message sent successfully!",
-            "success"
-        )
+        flash("Message sent successfully!", "success")
 
     except Exception as e:
-
-        print(e)
-
-        flash(
-            "Something went wrong!",
-            "danger"
-        )
+        print("Mail Error:", e)
+        flash("Something went wrong! Please try again.", "danger")
 
     return redirect("/#contact")
+
 
 # ==========================================
 # Resume Download
@@ -179,23 +91,20 @@ def download_resume():
         "resume.pdf"
     )
 
+
 # ==========================================
 # Error Pages
 # ==========================================
 
 @app.errorhandler(404)
 def page_not_found(error):
+    return render_template("index.html"), 404
 
-    return render_template(
-        "index.html"
-    ), 404
 
 @app.errorhandler(500)
 def server_error(error):
+    return "<h1>Internal Server Error</h1>", 500
 
-    return """
-    <h1>Internal Server Error</h1>
-    """, 500
 
 # ==========================================
 # Run Application
@@ -204,7 +113,7 @@ def server_error(error):
 if __name__ == "__main__":
 
     app.run(
-        debug=True,
         host="0.0.0.0",
-        port=5000
+        port=int(os.environ.get("PORT", 5000)),
+        debug=False
     )
