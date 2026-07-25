@@ -17,23 +17,15 @@ app.config["MAIL_SERVER"] = "smtp.gmail.com"
 app.config["MAIL_PORT"] = 587
 app.config["MAIL_USE_TLS"] = True
 app.config["MAIL_USE_SSL"] = False
+app.config["MAIL_TIMEOUT"] = 10
 
 app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
 app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
-
-app.config["MAIL_TIMEOUT"] = 10
 
 mail = Mail(app)
 
 # ==========================================
 # Home Page
-# ==========================================
-
-@app.route("/")
-def home():
-    return render_template("index.html")
-# ==========================================
-# Contact Form
 # ==========================================
 
 @app.route("/contact", methods=["POST"])
@@ -45,6 +37,9 @@ def contact():
     message = request.form.get("message")
 
     try:
+        # Check whether environment variables are loaded
+        if not app.config["MAIL_USERNAME"] or not app.config["MAIL_PASSWORD"]:
+            raise Exception("MAIL_USERNAME or MAIL_PASSWORD is not set.")
 
         msg = Message(
             subject=f"New Portfolio Contact: {subject}",
@@ -69,16 +64,22 @@ Message
 This message was sent from your portfolio contact form.
 """
 
+        print("Connecting to Gmail SMTP...")
         mail.send(msg)
+        print("Email sent successfully!")
 
         flash("Message sent successfully!", "success")
 
     except Exception as e:
-        print("Mail Error:", e)
-        flash("Something went wrong! Please try again.", "danger")
+        print("=" * 60)
+        print("MAIL ERROR")
+        print(type(e).__name__)
+        print(str(e))
+        print("=" * 60)
+
+        flash(f"Mail Error: {str(e)}", "danger")
 
     return redirect("/#contact")
-
 
 # ==========================================
 # Resume Download
