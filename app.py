@@ -56,7 +56,10 @@ Subject: {subject}
 
 {message}
 """
-
+print("MAIL_SERVER:", app.config["MAIL_SERVER"])
+print("MAIL_PORT:", app.config["MAIL_PORT"])
+print("MAIL_USERNAME:", app.config["MAIL_USERNAME"])
+print("MAIL_PASSWORD SET:", app.config["MAIL_PASSWORD"] is not None)
         mail.send(msg)
         flash("Message sent successfully!", "success")
 
