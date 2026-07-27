@@ -34,14 +34,6 @@ def home():
 
 @app.route("/contact", methods=["POST"])
 def contact():
-
-    name = request.form.get("name")
-    email = request.form.get("email")
-    subject = request.form.get("subject")
-    message = request.form.get("message")
-
-   @app.route("/contact", methods=["POST"])
-def contact():
     name = request.form.get("name")
     email = request.form.get("email")
     subject = request.form.get("subject")
