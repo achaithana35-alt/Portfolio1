@@ -40,41 +40,11 @@ def contact():
     subject = request.form.get("subject")
     message = request.form.get("message")
 
-    try:
-        # Check whether environment variables are loaded
-        if not app.config["MAIL_USERNAME"] or not app.config["MAIL_PASSWORD"]:
-            raise Exception("MAIL_USERNAME or MAIL_PASSWORD is not set.")
+   try:
+    mail.send(msg)
+    flash("Message sent successfully!", "success")
 
-        msg = Message(
-            subject=f"New Portfolio Contact: {subject}",
-            sender=app.config["MAIL_USERNAME"],
-            recipients=[app.config["MAIL_USERNAME"]]
-        )
-
-        msg.body = f"""
-You have received a new message from your portfolio website.
-
-----------------------------------------
-Name    : {name}
-Email   : {email}
-Subject : {subject}
-
-Message
-----------------------------------------
-
-{message}
-
-----------------------------------------
-This message was sent from your portfolio contact form.
-"""
-
-        print("Connecting to Gmail SMTP...")
-        mail.send(msg)
-        print("Email sent successfully!")
-
-        flash("Message sent successfully!", "success")
-
-    except Exception as e:
+except Exception as e:
     import traceback
 
     print("=" * 60)
@@ -83,7 +53,7 @@ This message was sent from your portfolio contact form.
 
     flash(f"Mail Error: {e}", "danger")
 
-    return redirect("/#contact")
+return redirect("/#contact")
 
 # ==========================================
 # Resume Download
