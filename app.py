@@ -40,21 +40,40 @@ def contact():
     subject = request.form.get("subject")
     message = request.form.get("message")
 
-   try:
-    mail.send(msg)
-    flash("Message sent successfully!", "success")
+   @app.route("/contact", methods=["POST"])
+def contact():
+    name = request.form.get("name")
+    email = request.form.get("email")
+    subject = request.form.get("subject")
+    message = request.form.get("message")
 
-except Exception as e:
-    import traceback
+    try:
+        if not app.config["MAIL_USERNAME"] or not app.config["MAIL_PASSWORD"]:
+            raise Exception("MAIL_USERNAME or MAIL_PASSWORD is not set.")
 
-    print("=" * 60)
-    traceback.print_exc()
-    print("=" * 60)
+        msg = Message(
+            subject=f"New Portfolio Contact: {subject}",
+            sender=app.config["MAIL_USERNAME"],
+            recipients=[app.config["MAIL_USERNAME"]]
+        )
 
-    flash(f"Mail Error: {e}", "danger")
+        msg.body = f"""
+Name: {name}
+Email: {email}
+Subject: {subject}
 
-return redirect("/#contact")
+{message}
+"""
 
+        mail.send(msg)
+        flash("Message sent successfully!", "success")
+
+    except Exception as e:
+        import traceback
+        traceback.print_exc()
+        flash(f"Mail Error: {e}", "danger")
+
+    return redirect("/#contact")
 # ==========================================
 # Resume Download
 # ==========================================
