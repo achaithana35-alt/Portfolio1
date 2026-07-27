@@ -21,12 +21,16 @@ app.config["MAIL_TIMEOUT"] = 10
 
 app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME")
 app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD")
+app.config["MAIL_DEFAULT_SENDER"] = app.config["MAIL_USERNAME"]
 
 mail = Mail(app)
 
 # ==========================================
 # Home Page
 # ==========================================
+@app.route("/")
+def home():
+    return render_template("index.html")
 
 @app.route("/contact", methods=["POST"])
 def contact():
@@ -71,13 +75,13 @@ This message was sent from your portfolio contact form.
         flash("Message sent successfully!", "success")
 
     except Exception as e:
-        print("=" * 60)
-        print("MAIL ERROR")
-        print(type(e).__name__)
-        print(str(e))
-        print("=" * 60)
+    import traceback
 
-        flash(f"Mail Error: {str(e)}", "danger")
+    print("=" * 60)
+    traceback.print_exc()
+    print("=" * 60)
+
+    flash(f"Mail Error: {e}", "danger")
 
     return redirect("/#contact")
 
