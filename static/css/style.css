@@ -487,74 +487,61 @@ opacity:.5;
     padding:30px;
 
 }
+/*=========================
+      Skills Section
+==========================*/
 
-/*==================================================
-                SKILLS
-==================================================*/
+.skill-card{
 
-#skills{
+    background:rgba(255,255,255,0.08);
 
-    position:relative;
+    border:1px solid rgba(255,255,255,.15);
 
-}
+    border-radius:20px;
 
-.skill{
+    backdrop-filter:blur(15px);
 
-    margin-bottom:25px;
+    padding:35px 20px;
 
-}
+    text-align:center;
 
-.skill h5{
+    transition:.4s;
 
-    margin-bottom:10px;
-
-    font-weight:600;
-
-}
-
-.progress{
-
-    height:14px;
-
-    border-radius:30px;
-
-    overflow:hidden;
-
-    background:rgba(255,255,255,.08);
-
-}
-
-.progress-bar{
-
-    background:linear-gradient(
-    90deg,
-    #6d28d9,
-    #8b5cf6,
-    #a855f7);
-
-    font-size:12px;
-
-    font-weight:600;
+    height:180px;
 
     display:flex;
 
-    justify-content:flex-end;
+    flex-direction:column;
+
+    justify-content:center;
 
     align-items:center;
 
-    padding-right:10px;
+}
 
-    animation:progressAnimation 2s ease;
+.skill-card:hover{
+
+    transform:translateY(-12px);
+
+    box-shadow:0 0 25px rgba(140,82,255,.6);
 
 }
 
-@keyframes progressAnimation{
+.skill-card i{
 
-from{
+    font-size:65px;
 
-width:0;
+    margin-bottom:18px;
 
 }
+
+.skill-card h5{
+
+    color:white;
+
+    font-weight:600;
+
+    margin-top:10px;
 
 }
 
