@@ -1296,3 +1296,81 @@ transition:.3s;
 transform:translateY(-8px);
 
 }
+/* ===========================
+   Moving Skills Slider
+=========================== */
+
+.skills-slider{
+    overflow:hidden;
+    width:100%;
+    position:relative;
+    padding:25px 0;
+}
+
+.skills-track{
+    display:flex;
+    width:max-content;
+    animation:scrollSkills 30s linear infinite;
+}
+
+.skills-slider:hover .skills-track{
+    animation-play-state:paused;
+}
+
+.skill-card{
+    width:180px;
+    min-width:180px;
+    margin:0 12px;
+
+    padding:25px 15px;
+
+    border-radius:18px;
+
+    text-align:center;
+
+    background:rgba(255,255,255,.05);
+
+    border:1px solid rgba(255,255,255,.1);
+
+    backdrop-filter:blur(15px);
+
+    transition:.4s;
+}
+
+.skill-card:hover{
+
+    transform:translateY(-10px);
+
+    border-color:#00e5ff;
+
+    box-shadow:0 0 25px rgba(0,229,255,.3);
+
+}
+
+.skill-card i{
+
+    font-size:55px;
+
+    margin-bottom:15px;
+
+}
+
+.skill-card h5{
+
+    color:#fff;
+
+    font-weight:600;
+
+}
+
+@keyframes scrollSkills{
+
+    from{
+        transform:translateX(0);
+    }
+
+    to{
+        transform:translateX(-50%);
+    }
+
+}
