@@ -1052,7 +1052,33 @@ AOS.init({
 });
 
 </script>
+<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
+<script>
+const swiper = new Swiper(".skillsSwiper", {
+
+    loop: true,
+
+    speed: 3500,
+
+    autoplay: {
+        delay: 0,
+        disableOnInteraction: false,
+    },
+
+    freeMode: true,
+
+    slidesPerView: "auto",
+
+    spaceBetween: 20,
+
+    navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+    },
+
+});
+</script>
 </body>
 
 </html>
