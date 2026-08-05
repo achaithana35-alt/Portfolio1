@@ -1374,3 +1374,54 @@ transform:translateY(-8px);
     }
 
 }
+/* ===== Skills Slider ===== */
+
+.skillsSwiper{
+    padding:20px 50px;
+}
+
+.swiper-slide{
+    width:190px !important;
+}
+
+.skill-card{
+    background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.15);
+    backdrop-filter:blur(15px);
+    border-radius:20px;
+    text-align:center;
+    padding:30px 20px;
+    transition:.4s;
+    height:220px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+}
+
+.skill-card:hover{
+    transform:translateY(-10px);
+    border-color:#00d9ff;
+    box-shadow:0 0 25px rgba(0,217,255,.35);
+}
+
+.skill-card i{
+    font-size:60px;
+    margin-bottom:15px;
+}
+
+.skill-card h5{
+    color:#fff;
+    margin:0;
+}
+
+.swiper-button-next,
+.swiper-button-prev{
+    color:#00d9ff;
+    font-weight:bold;
+}
+
+.swiper-button-next:hover,
+.swiper-button-prev:hover{
+    transform:scale(1.2);
+}
